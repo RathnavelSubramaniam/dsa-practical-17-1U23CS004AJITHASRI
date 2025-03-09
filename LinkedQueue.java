@@ -17,21 +17,43 @@ public class LinkedQueue {
     }
     public boolean isEmpty()
     {
-        //TYPE YOUR CODE HERE
+        if(front==null)
+        return true;
+        else
+        return false;
     }
-    public void enQueue() 
+    public void enQueue(int data) 
     {
-        //TYPE YOUR CODE HERE
+        Node newNode = new Node(data);
+        if (rear == null) {
+            front = rear = newNode;
+            return;
+        }
+        else
+        {
+        rear.next = newNode;
+        rear = newNode;
+        }
     }
     public int deQueue() 
     {
-       //TYPE YOUR CODE HERE
-     }
-    
+       int data=-1;
+       if (isEmpty()) {
+       System.out.print("\nQueue Underflow");
+    }
+    else
+    {
+        Node temp = front;
+        data=temp.data;
+        front = front.next;
+    }
+        if (front == null)
+        rear = null;
+        return data;
+        }
 public static void main(String[] args) {
     LinkedQueue queue = new LinkedQueue();
         Scanner scanner = new Scanner(System.in);
-        Scanner sc = new Scanner(System.in);
         int ch,data, c;
         System.out.println("Enter integers to create nodes (enter a non-integer to exit):");
         while (scanner.hasNext()) {
@@ -85,6 +107,5 @@ public void displayQueue() {
        current = current.next;
        }
 System.out.println("null");
-    }
 }
-
+}
