@@ -1,0 +1,63 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Test
+      id: test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test
+        setup-command: ''
+        command: javac LinkedQueue.java && java LinkedQueue
+        input: |-
+          1
+          2
+          3
+          null
+          1
+          4
+          2
+          3
+        expected-output: |-
+          Enter integers to create nodes (enter a non-integer to exit):
+          Queue using Linked List created
+          Queue
+          1 -> 2 -> 3 -> null
+          1.EnQueue
+          2.DeQueue
+          3.Exit
+          Enter your choice:
+          Enter the element to insert:
+          After EnQueue
+          1 -> 2 -> 3 -> 4 -> null
+          1.EnQueue
+          2.DeQueue
+          3.Exit
+          Enter your choice:
+          Deleted Element:1
+          After DeQueue
+          2 -> 3 -> 4 -> null
+          1.EnQueue
+          2.DeQueue
+          3.Exit
+          Enter your choice:
+        comparison-method: exact
+        timeout: 10
+        max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST_RESULTS: "${{steps.test.outputs.result}}"
+      with:
+        runners: test
